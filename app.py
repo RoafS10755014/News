@@ -1,6 +1,6 @@
 from flask import Flask, request, abort
 import os
-from service.Clawer import ticketInfo,imageInfo,exchangeRate,fruitPrice,getHtmlImgUrl,getSebUrl,getCk101Url,getCk101Photo,takeDigCurrency,takeUsdtPremium
+from service.Clawer import getYahooNewsUrl, ticketInfo,imageInfo,exchangeRate,fruitPrice,getHtmlImgUrl,getSebUrl,getCk101Url,getCk101Photo,takeDigCurrency,takeUsdtPremium
 
 from linebot import (
     LineBotApi, WebhookHandler
@@ -127,10 +127,10 @@ def handle_message(event):
             outInfo += getHtmlImgUrl(getSebUrl('https://www.mzitu.com/tag/baoru/'))
 
         if '新聞' in event.message.text:
-            outInfo += getHtmlImgUrl(getSebUrl('https://tw.news.yahoo.com/'))
-            
+            outInfo += getHtmlImgUrl(getYahooNewsUrl('https://tw.news.yahoo.com/'))
+
         if '肺炎' in event.message.text:
-            outInfo += getHtmlImgUrl(getSebUrl('https://tw.news.yahoo.com/topic/2019-nCoV'))
+            outInfo += getHtmlImgUrl(getYahooNewsUrl('https://tw.news.yahoo.com/topic/2019-nCoV'))
 
         if '!火龍果' in event.message.text:
             outInfo += fruitPrice("812/%E7%81%AB%E9%BE%8D%E6%9E%9C-%E7%B4%85%E8%82%89(%E7%B4%85%E9%BE%8D%E6%9E%9C")

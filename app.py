@@ -127,7 +127,10 @@ def handle_message(event):
             outInfo += getHtmlImgUrl(getSebUrl('https://www.mzitu.com/tag/baoru/'))
 
         if '新聞' in event.message.text:
-            outInfo += getYahooNewsUrl('https://tw.news.yahoo.com/')
+            outInfo += getYahooNewsUrl('https://tw.news.yahoo.com/topic/2019-nCoV')
+
+        if '髒話' in event.message.text:
+            outInfo += 'ㄍㄋㄋㄐㄅ'
 
         if '肺炎' in event.message.text:
             outInfo += getHtmlImgUrl(getYahooNewsUrl('https://tw.news.yahoo.com/topic/2019-nCoV'))

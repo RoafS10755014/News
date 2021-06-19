@@ -124,25 +124,8 @@ def getSebUrl(url):
 
     return next_link[num]  # python3 python2版本直接返回html
 
-def getYahooNewsUrl(url):
-    # 瀏覽器請求頭（大部分網站沒有這個請求頭可能會報錯）
-    print(url)
-    mheaders = {
-        'User-Agent': "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1"}
-    req = request.Request(url,headers=mheaders) #新增headers避免伺服器拒絕非瀏覽器訪問
-    page = request.urlopen(req)
-    html = page.read()
-    soup = BeautifulSoup(html.decode('utf-8'), 'html.parser')
-    body = soup.find(id="中央疫情指揮中心")
-    link = body.find_all("li")
-    next_link = []
-    for li_element in link:
-        # print(li_element.find('a').get('href'))
-        next_link.append(li_element.find('a').get('href'))
 
-    num = random.randint(1, len(next_link)-1)
 
-    return next_link[num]  # python3 python2版本直接返回html
 
 def getHtmlImgUrl(url):
     print(url)
@@ -296,6 +279,46 @@ def takeUsdtPremium(price):
     result += "USD兌NTD 1:" + temp
     return result
 
+def getYahooNewsUrl(url):
+    # 瀏覽器請求頭（大部分網站沒有這個請求頭可能會報錯）
+    print(url)
+    mheaders = {
+        'User-Agent': "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1"}
+    req = request.Request(url,headers=mheaders) #新增headers避免伺服器拒絕非瀏覽器訪問
+    page = request.urlopen(req)
+    html = page.read()
+    soup = BeautifulSoup(html.decode('utf-8'), 'html.parser')
+    body = soup.find(id="中央疫情指揮中心")
+    link = body.find_all("li")
+    next_link = []
+    for li_element in link:
+        # print(li_element.find('a').get('href'))
+        next_link.append(li_element.find('a').get('href'))
+
+    num = random.randint(1, len(next_link)-1)
+
+    return next_link[num]  # python3 python2版本直接返回html
+
+def getYahooHtmlImgUrl(url):
+    print(url)
+    index = []
+    mheaders = {
+        'User-Agent': "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1"}
+    req = request.Request(url, headers=mheaders)  # 新增headers避免伺服器拒絕非瀏覽器訪問
+    page = request.urlopen(req)
+    html = page.read()
+    soup = BeautifulSoup(html.decode('utf-8'), 'html.parser')
+    body = soup.find(class_='stream')
+    page = body.find_all("div")
+
+    for page_element in page:
+        # print(page_element.get('href').split('/'))
+        element = page_element.get('href').split('/')
+        if element[len(element)-1] != "":
+            index.append(int(element[len(element)-1]))
+
+    return url+"/"+str(random.randint(1, index[4]))
+
 if __name__ == '__main__':
     # Test Function
     # IgUrl = "https://www.instagram.com/p/BymVt2NH5OE/?igshid=7jpeb1f596h6"
@@ -307,3 +330,5 @@ if __name__ == '__main__':
     IArray = takeUsdtPremium("!U溢價@28.34@3.74")
 
     print(IArray)
+    print()
+    print(getYahooHtmlImgUrl(getYahooNewsUrl("https://tw.news.yahoo.com/topic/2019-nCoV")))

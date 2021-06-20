@@ -281,7 +281,7 @@ def takeUsdtPremium(price):
 
 def getYahooNewsUrl(url):
     # 瀏覽器請求頭（大部分網站沒有這個請求頭可能會報錯）
-    print(url)
+    #print(url)
     mheaders = {
         'User-Agent': "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1"}
     req = request.Request(url,headers=mheaders) #新增headers避免伺服器拒絕非瀏覽器訪問
@@ -308,16 +308,47 @@ def getYahooHtmlImgUrl(url):
     page = request.urlopen(req)
     html = page.read()
     soup = BeautifulSoup(html.decode('utf-8'), 'html.parser')
-    body = soup.find(class_='stream')
-    page = body.find_all("div")
+    body = soup.find(id='stream-wrapper')
+    page = body.find_all("a")
 
     for page_element in page:
         # print(page_element.get('href').split('/'))
         element = page_element.get('href').split('/')
         if element[len(element)-1] != "":
-            index.append(int(element[len(element)-1]))
+            index.append(str(element[len(element)-1]))
 
     return url+"/"+str(random.randint(1, index[4]))
+
+def ticketInfo1():
+    my_headers = {'cookie': 'over18=1;'}
+    inFo = ""
+    resp = requests.get('https://www.ptt.cc/bbs/Beauty/index.html', headers = my_headers)
+    soup = BeautifulSoup(resp.text, 'html.parser')
+    main_titles = soup.find_all('div', 'title')
+
+    for title in main_titles:
+
+        if "正妹" in title.text:
+            inFo += title.text.strip() + "\n"
+            inFo += "https://www.ptt.cc/" + title.find("a")['href'] + "\n"
+
+    return inFo
+def ticketInfo2():
+    my_headers = {'cookie': 'over18=1;'}
+    inFo = ""
+    resp = requests.get('https://www.ptt.cc/bbs/Gossiping/index.html', headers = my_headers)
+    soup = BeautifulSoup(resp.text, 'html.parser')
+    main_titles = soup.find_all('div', 'title')
+
+    for title in main_titles:
+
+        if "問卦" in title.text:
+            inFo += title.text.strip() + "\n"
+            inFo += "https://www.ptt.cc/" + title.find("a")['href'] + "\n"
+
+    return inFo
+
+
 
 if __name__ == '__main__':
     # Test Function
@@ -331,4 +362,6 @@ if __name__ == '__main__':
 
     print(IArray)
     print()
-    print(getYahooHtmlImgUrl(getYahooNewsUrl("https://tw.news.yahoo.com/topic/2019-nCoV")))
+    print(getYahooNewsUrl("https://tw.news.yahoo.com/topic/2019-nCoV"))
+    print(ticketInfo1())
+    print(googleSearch('肺炎'))

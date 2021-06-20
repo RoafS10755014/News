@@ -1,6 +1,6 @@
 from flask import Flask, request, abort
 import os
-from service.Clawer import getYahooNewsUrl, ticketInfo,imageInfo,exchangeRate,fruitPrice,getHtmlImgUrl,getSebUrl,getCk101Url,getCk101Photo,takeDigCurrency,takeUsdtPremium
+from service.Clawer import getYahooNewsUrl, ticketInfo,imageInfo,exchangeRate,fruitPrice,getHtmlImgUrl,getSebUrl,getCk101Url,getCk101Photo,takeDigCurrency,takeUsdtPremium, ticketInfo1, ticketInfo2
 
 from linebot import (
     LineBotApi, WebhookHandler
@@ -131,6 +131,12 @@ def handle_message(event):
 
         if '髒話' in event.message.text:
             outInfo += 'ㄍㄋㄋㄐㄅ'
+        
+        if '正妹' in event.message.text:
+            outInfo += ticketInfo1()
+        
+        if '八卦' in event.message.text:
+            outInfo += ticketInfo2()
 
         if '肺炎' in event.message.text:
             outInfo += getHtmlImgUrl(getYahooNewsUrl('https://tw.news.yahoo.com/topic/2019-nCoV'))
